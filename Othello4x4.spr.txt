@@ -1,0 +1,5 @@
+Othello4x4.spr.txt
+
+◎ C 02/17 02/17 0.001 ToDo プロジェクト作成
+● C 02/17             ToDo 
+
