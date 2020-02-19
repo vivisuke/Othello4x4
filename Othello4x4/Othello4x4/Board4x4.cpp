@@ -48,6 +48,18 @@ bitboard_t Board4x4::b_getRev(bitboard_t p)	//	黒を p に打った場合に、
 	rev |= (p << 4) & wv & ((m_black >> 4) | ((wv  & (m_black >> 4)) >> 4));    //  隣の石
 	rev |= (p << 8) & (wv << 4) & wv & (m_black >> 4);    //  もう一個先の石
 	const bitboard_t wd = m_white & 0x0660;           //  対角線方向用マスク
+	//	左下方向に返る石をチェック
+	rev |= (p >> 3) & wv & ((m_black << 3) | ((wv  & (m_black << 3)) << 3));    //  隣の石
+	rev |= (p >> 6) & (wv >> 3) & wv & (m_black << 3);    //  もう一個先の石
+	//	右下方向に返る石をチェック
+	rev |= (p >> 5) & wv & ((m_black << 5) | ((wv  & (m_black << 5)) << 5));    //  隣の石
+	rev |= (p >> 10) & (wv >> 5) & wv & (m_black << 5);    //  もう一個先の石
+	//	左上方向に返る石をチェック
+	rev |= (p << 5) & wv & ((m_black >> 5) | ((wv  & (m_black >> 5)) >> 5));    //  隣の石
+	rev |= (p << 10) & (wv << 5) & wv & (m_black >> 5);    //  もう一個先の石
+	//	右上方向に返る石をチェック
+	rev |= (p << 3) & wv & ((m_black >> 3) | ((wv  & (m_black >> 3)) >> 3));    //  隣の石
+	rev |= (p << 6) & (wv << 3) & wv & (m_black >> 3);    //  もう一個先の石
 	//
 	return rev;
 }

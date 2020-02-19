@@ -45,8 +45,8 @@ public:
 	bitboard_t	b_getRev(bitboard_t p);	//	黒を p に打った場合に、反転する白のパターンを取得
 public:
 	void	init();
-	void	b_set(bitboard_t p) { m_black |= p; }
-	void	w_set(bitboard_t p) { m_white |= p; }
+	void	b_set(bitboard_t p) { m_black |= p; m_white &= ~p; }
+	void	w_set(bitboard_t p) { m_white |= p; m_black &= ~p; }
 public:
 	bitboard_t	m_black;		//	黒石
 	bitboard_t	m_white;		//	白石

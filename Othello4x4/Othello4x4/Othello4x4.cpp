@@ -95,7 +95,8 @@ void test_getRev()
 	//		３・●●○
 	//		４・・・・
 	bd.b_set(D2|C3);
-	bd.w_set(C2|D2);
+	bd.w_set(C2|D3);
+	cout << bd.text() << "\n";
 	rev = bd.b_getRev(A2);	assert( rev == (B2|C2) );
 	rev = bd.b_getRev(A1);	assert( rev == B2 );
 }
