@@ -1,15 +1,12 @@
-﻿#include <iostream>
+﻿#include <string>
+#include <vector>
+#include <iostream>
 #include <assert.h>
+#include "Board4x4.h"
 #include "utils.h"
 
 using namespace std;
 
-#if	0
-typedef unsigned short bitboard_t;
-#else
-using bitboard_t = unsigned short;
-#endif
-typedef unsigned int uint32;
 
 //	空欄が存在するかどうかチェック
 bool isBoardFull(bitboard_t black, bitboard_t white)
@@ -68,6 +65,16 @@ void test_numOfBits()
 		assert( cntLoop == cnt );
 	}
 }
+//	石反転処理
+void doPut(	bitboard_t &black,		//  黒石
+					bitboard_t &white,		//  白石
+					bitboard_t p,				//  黒石を置く位置
+					bitboard_t rev)			//  反転するビットパターン（計算方法は次節参照）
+{
+    black ^= p | rev;
+    white ^= rev;
+}
+//	初期化
 int main()
 {
 	test_numOfBits();
