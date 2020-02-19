@@ -3,8 +3,8 @@ Othello4x4.spr.txt
 ◎ C 02/17 02/17 0.001 ToDo プロジェクト作成
 ◎ C 02/17 02/17 0.001 ToDo ビット数カウント
 ◎ C 02/20 02/20 0.001 ToDo Board4x4 クラス追加
-● C 02/20             ToDo 
-● C 02/20             ToDo 
+◎ C 02/20 02/20 0.001 ToDo Board4x4 盤面初期化
+● C 02/20             ToDo Board4x4::text()
 ● C 02/20             ToDo 
 ● C 02/20             ToDo 
 ● C 02/20             ToDo 

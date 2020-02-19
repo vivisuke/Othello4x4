@@ -79,5 +79,7 @@ int main()
 {
 	test_numOfBits();
 	//
+	Board4x4 bd;
+	//
     std::cout << "OK\n";
 }
