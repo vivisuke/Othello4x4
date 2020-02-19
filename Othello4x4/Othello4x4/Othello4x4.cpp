@@ -65,6 +65,40 @@ void test_numOfBits()
 		assert( cntLoop == cnt );
 	}
 }
+void test_getRev()
+{
+	Board4x4 bd;
+//		　ＡＢＣＤ
+//		１・・・・
+//		２・○●・
+//		３・●○・
+//		４・・・・
+	auto rev = bd.b_getRev(A1);	assert( rev == 0 );
+	rev = bd.b_getRev(A2);	assert( rev == B2 );
+	rev = bd.b_getRev(A3);	assert( rev == 0 );
+	rev = bd.b_getRev(A4);	assert( rev == 0 );
+	rev = bd.b_getRev(B1);	assert( rev == B2 );
+	rev = bd.b_getRev(B2);	assert( rev == 0 );
+	rev = bd.b_getRev(B3);	assert( rev == 0 );
+	rev = bd.b_getRev(B4);	assert( rev == 0 );
+	rev = bd.b_getRev(C1);	assert( rev == 0 );
+	rev = bd.b_getRev(C2);	assert( rev == 0 );
+	rev = bd.b_getRev(C3);	assert( rev == 0 );
+	rev = bd.b_getRev(C4);	assert( rev == C3 );
+	rev = bd.b_getRev(D1);	assert( rev == 0 );
+	rev = bd.b_getRev(D2);	assert( rev == 0 );
+	rev = bd.b_getRev(D3);	assert( rev == C3 );
+	rev = bd.b_getRev(D4);	assert( rev == 0 );
+	//		　ＡＢＣＤ
+	//		１・・・・
+	//		２・○○●
+	//		３・●●○
+	//		４・・・・
+	bd.b_set(D2|C3);
+	bd.w_set(C2|D2);
+	rev = bd.b_getRev(A2);	assert( rev == (B2|C2) );
+	rev = bd.b_getRev(A1);	assert( rev == B2 );
+}
 //	石反転処理
 void doPut(	bitboard_t &black,		//  黒石
 					bitboard_t &white,		//  白石
@@ -78,6 +112,7 @@ void doPut(	bitboard_t &black,		//  黒石
 int main()
 {
 	test_numOfBits();
+	test_getRev();
 	//
 	Board4x4 bd;
 	cout << bd.text() << "\n";

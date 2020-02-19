@@ -5,6 +5,12 @@ Othello4x4.spr.txt
 ◎ C 02/20 02/20 0.001 ToDo Board4x4 クラス追加
 ◎ C 02/20 02/20 0.001 ToDo Board4x4 盤面初期化
 ◎ C 02/20 02/20 0.001 ToDo Board4x4::text()
+● C 02/20             ToDo Board4x4::b_genPutPos()	黒着手可能箇所生成
+● C 02/20             ToDo Board4x4::b_getRev(bitmap_t p) p に黒石を打った場合に、反転する白のパターンを取得
+◎ C 02/20 02/20 0.001 ToDo Board4x4::b_set(bitmap_t p) p に黒石を置く
+◎ C 02/20 02/20 0.001 ToDo Board4x4::w_set(bitmap_t p) p に白石を置く
+● C 02/20             ToDo 
+● C 02/20             ToDo 
 ● C 02/20             ToDo 
 ● C 02/20             ToDo 
 ● C 02/20             ToDo 
