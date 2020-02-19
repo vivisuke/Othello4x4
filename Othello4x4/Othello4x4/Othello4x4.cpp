@@ -80,6 +80,7 @@ int main()
 	test_numOfBits();
 	//
 	Board4x4 bd;
+	cout << bd.text() << "\n";
 	//
     std::cout << "OK\n";
 }

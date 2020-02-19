@@ -9,6 +9,8 @@ using bitboard_t = unsigned short;
 #endif
 typedef unsigned int uint32;
 
+#define		MSB		0x8000			//	Most Significant Bit、最上位ビット
+
 //	4x4 盤面クラス
 class Board4x4 {
 public:

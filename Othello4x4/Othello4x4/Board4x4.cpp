@@ -15,6 +15,16 @@ void Board4x4::init()
 std::string Board4x4::text() const
 {
 	string txt;
+	for (int mask = MSB, i = 0; mask != 0; mask>>=1) {
+		if( (m_black & mask) != 0 )
+			txt += "●";
+		else if( (m_white & mask) != 0 )
+			txt += "○";
+		else
+			txt += "・";
+		if( ++i % 4 == 0 )
+			txt += "\n";
+	}
 	return txt;
 }
 
