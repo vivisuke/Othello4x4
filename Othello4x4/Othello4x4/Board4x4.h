@@ -33,6 +33,12 @@ typedef unsigned int uint32;
 #define		C4			0x0002
 #define		D4		0x0001
 
+//  立っているビット数を数える。分割統治法を用いる版（処理時間は O(logN)）
+int numOfBits(bitboard_t bits);
+int numSpace(bitboard_t black, bitboard_t white);		//	空欄数を返す
+bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p);		//	黒を p に打った場合に、反転する白のパターンを取得
+int negaMax(int nspc, bitboard_t black, bitboard_t white);			//	黒番深さ優先探索
+
 //	4x4 盤面クラス
 class Board4x4 {
 public:

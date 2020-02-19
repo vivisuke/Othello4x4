@@ -30,16 +30,6 @@ int numOfBits_BB(bitboard_t bits)
     bits = (bits & 0x0f0f) + (bits >> 4 & 0x0f0f);    //  8bitごとに計算
     return (bits & 0x00ff) + (bits >> 8 & 0x00ff);    //  16ビット分を計算
 }
-//  立っているビット数を数える。分割統治法を用いる版（処理時間は O(logN)）少し最適化
-int numOfBits(bitboard_t bits)
-{
-    bits = bits - (bits >> 1 & 0x5555);
-    //bits = (bits & 0x5555) + (bits >> 1 & 0x5555);
-    bits = (bits & 0x3333) + (bits >> 2 & 0x3333);
-    bits = (bits & 0x0f0f) + (bits >> 4 & 0x0f0f);
-    return (bits + (bits >> 8)) & 0x001f;
-    //return (bits & 0x00ff) + (bits >> 8 & 0x00ff);
-}
 //  白石・黒石の立っているビット数を同時に数える。
 void numOfBits(bitboard_t &b, bitboard_t &w)
 {
@@ -121,6 +111,7 @@ int main()
 	//
 	Board4x4 bd;
 	cout << bd.text() << "\n";
+	assert( numSpace(bd.m_black, bd.m_white) == 12 );
 	//
     std::cout << "OK\n";
 }
