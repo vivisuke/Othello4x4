@@ -39,10 +39,15 @@ public:
 	Board4x4() {
 		init();
 	}
+	Board4x4(bitboard_t black, bitboard_t white)
+		: m_black(black), m_white(white)
+	{
+	}
 public:
 	std::string	text() const;
-	bitboard_t	b_genPutPos() const;		//	黒が着手可能な箇所を取得
-	bitboard_t	b_getRev(bitboard_t p);	//	黒を p に打った場合に、反転する白のパターンを取得
+	//bitboard_t	b_genPutPos() const;		//	黒が着手可能な箇所を取得
+	bitboard_t	b_getRev(bitboard_t p) const;	//	黒を p に打った場合に、反転する白のパターンを取得
+	bitboard_t	w_getRev(bitboard_t p) const;	//	白を p に打った場合に、反転する黒のパターンを取得
 public:
 	void	init();
 	void	b_set(bitboard_t p) { m_black |= p; m_white &= ~p; }

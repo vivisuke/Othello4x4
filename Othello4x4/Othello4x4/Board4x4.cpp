@@ -28,7 +28,7 @@ std::string Board4x4::text() const
 	}
 	return txt;
 }
-bitboard_t Board4x4::b_getRev(bitboard_t p)	//	黒を p に打った場合に、反転する白のパターンを取得
+bitboard_t Board4x4::b_getRev(bitboard_t p) const		//	黒を p に打った場合に、反転する白のパターンを取得
 {
 	if( ((m_black | m_white) & p) != 0 ) return 0;      //  p が空白ではない場合
 	bitboard_t rev = 0;                         //  反転パターン
@@ -62,5 +62,10 @@ bitboard_t Board4x4::b_getRev(bitboard_t p)	//	黒を p に打った場合に、
 	rev |= (p << 6) & (wv << 3) & wv & (m_black >> 3);    //  もう一個先の石
 	//
 	return rev;
+}
+bitboard_t Board4x4::w_getRev(bitboard_t p) const	//	白を p に打った場合に、反転する黒のパターンを取得
+{
+	Board4x4 b2(m_white, m_black);
+	return b2.b_getRev(p);
 }
 

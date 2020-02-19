@@ -96,9 +96,13 @@ void test_getRev()
 	//		４・・・・
 	bd.b_set(D2|C3);
 	bd.w_set(C2|D3);
-	cout << bd.text() << "\n";
-	rev = bd.b_getRev(A2);	assert( rev == (B2|C2) );
+	//cout << bd.text() << "\n";
 	rev = bd.b_getRev(A1);	assert( rev == B2 );
+	rev = bd.b_getRev(A2);	assert( rev == (B2|C2) );
+	rev = bd.w_getRev(A3);	assert( rev == (B3|C3) );
+	rev = bd.w_getRev(A4);	assert( rev == B3 );
+	rev = bd.b_getRev(D1);	assert( rev == C2 );
+	rev = bd.w_getRev(D4);	assert( rev == C3 );
 }
 //	石反転処理
 void doPut(	bitboard_t &black,		//  黒石
