@@ -10,7 +10,7 @@ Othello4x4.spr.txt
 ◎ C 02/20 02/20 0.001 ToDo Board4x4::b_set(bitmap_t p) p に黒石を置く
 ◎ C 02/20 02/20 0.001 ToDo Board4x4::w_set(bitmap_t p) p に白石を置く
 ◎ C 02/20 02/20 0.001 問題 b_set(), w_set() が動作不良
-● C 02/20             ToDo 
+◎ C 02/20 02/20 0.001 ToDo getRev() を関数化
 ● C 02/20             ToDo 
 ● C 02/20             ToDo 
 ● C 02/20             ToDo 
