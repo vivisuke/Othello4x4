@@ -39,7 +39,7 @@ int numSpace(bitboard_t black, bitboard_t white);		//	空欄数を返す
 bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p);		//	黒を p に打った場合に、反転する白のパターンを取得
 void	b_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	黒を p に打つ
 void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	白を p に打つ
-int negaMax(bitboard_t black, bitboard_t white, int nspc);			//	黒番深さ優先探索
+int negaMax(bitboard_t black, bitboard_t white, int nspc, bool=false);			//	黒番深さ優先探索
 std::string boardText(bitboard_t black, bitboard_t white);
 
 //	4x4 盤面クラス

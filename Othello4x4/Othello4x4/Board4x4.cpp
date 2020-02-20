@@ -44,7 +44,7 @@ void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)
 	white ^= p | rev;
 	black ^= rev;
 }
-int negaMax(bitboard_t black, bitboard_t white, int nspc)			//	黒番深さ優先探索
+int negaMax(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒番深さ優先探索
 {
 	if( nspc == 0 ) {
 		//cout << boardText(black, white) << "\n";
@@ -52,16 +52,23 @@ int negaMax(bitboard_t black, bitboard_t white, int nspc)			//	黒番深さ優�
 	}
 	bitboard_t space = ~(black | white);    //  空欄の部分だけビットを立てる
 	int maxev = -9999;
+	bool put = false;
 	while( space != 0 ) {
 		const bitboard_t p = space & -space;      //  一番右のビットのみ取り出す
 		bitboard_t rev = getRev(black, white, p);	//  反転パターン取得
         if( rev != 0 ) {									//  石が返る場合
         	int ev = -negaMax(white^rev, black|p|rev, nspc-1);
         	maxev = max(maxev, ev);
+        	put = true;
         }
 		space ^= p;                     //  一番右のビットをOFFにする
 	}
-	return maxev;
+	if( put )		//	パスでない場合
+		return maxev;
+	if( pass )	//	白黒双方がパスの場合
+		return numOfBits(black) - numOfBits(white);
+	else
+		return -negaMax(white, black, nspc, true);;
 }
 //----------------------------------------------------------------------
 //	盤面初期化

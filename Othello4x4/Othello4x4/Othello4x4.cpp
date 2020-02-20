@@ -139,6 +139,7 @@ void test_negaMax()
 	cout << bd.text() << "\n";
 	ev = bd.negaMax();
 	cout << "ev = " << ev << "\n";
+	assert( ev == 14 );		//	D1, C1 連打、15 - 1 = 14
 }
 //	初期化
 int main()
@@ -151,8 +152,8 @@ int main()
 	assert( numSpace(bd.m_black, bd.m_white) == 12 );
 	//
 	test_negaMax();
-	//auto ev = bd.negaMax();
-	//cout << "ev = " << ev << "\n";
+	auto ev = bd.negaMax();
+	cout << "ev = " << ev << "\n";
 	//
     std::cout << "OK\n";
 }
