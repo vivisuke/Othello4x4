@@ -143,6 +143,27 @@ void test_negaMax()
 	cout << "ev = " << ev << "\n";
 	assert( ev == 14 );		//	D1, C1 連打、15 - 1 = 14
 }
+void test_negaMaxTT()
+{
+	cout << "test_negaMaxTT()\n";
+	//		　ＡＢＣＤ
+	//		１○●・・
+	//		２●○○●
+	//		３●●●○
+	//		４●●●●
+	Board4x4 bd(0x49ef, 0x8610);
+	cout << bd.text() << "\n";
+	auto ev = bd.negaMaxTT();
+	cout << "ev = " << ev << "\n";
+	cout << "g_tt.size() = " << g_tt.size() << "\n";
+	//	トランスポジションテーブルの内容をすべて表示
+	for (auto itr = g_tt.begin(); itr != g_tt.end(); ++itr) {
+		bitboard_t black = itr->first >> 16;
+		bitboard_t white = itr->first & BB_MASK;
+		cout << boardText(black, white) << "ev = " << (int)itr->second << "\n\n";
+	}
+	cout << "\n";
+}
 //	初期化
 int main()
 {
@@ -157,6 +178,7 @@ int main()
 	auto ev = bd.negaMax();
 	cout << "ev = " << ev << "\n";
 	//
+	test_negaMaxTT();
 	auto evtt = bd.negaMaxTT();		//	トランスポジションテーブル 使用
 	cout << "evtt = " << evtt << "\n";
 	cout << "g_tt.size() = " << g_tt.size() << "\n";

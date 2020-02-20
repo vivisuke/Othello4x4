@@ -11,7 +11,8 @@ using bitboard_t = unsigned short;
 typedef unsigned int uint32;
 typedef char int8;
 
-#define		MSB		0x8000			//	Most Significant Bit、最上位ビット
+#define		MSB			0x8000			//	Most Significant Bit、最上位ビット
+#define		BB_MASK	0xffff
 
 //		　ＡＢＣＤ
 //		１・・・・
