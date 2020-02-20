@@ -93,7 +93,7 @@ int negaMaxTT(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒�
 		const bitboard_t p = space & -space;      //  一番右のビットのみ取り出す
 		bitboard_t rev = getRev(black, white, p);	//  反転パターン取得
         if( rev != 0 ) {									//  石が返る場合
-        	int ev = -negaMax(white^rev, black|p|rev, nspc-1);
+        	int ev = -negaMaxTT(white^rev, black|p|rev, nspc-1);
         	maxev = max(maxev, ev);
         	put = true;
         }

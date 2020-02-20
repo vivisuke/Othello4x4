@@ -1,5 +1,6 @@
 ﻿#include <string>
 #include <vector>
+//#include <unordered_map>
 #include <iostream>
 #include <assert.h>
 #include "Board4x4.h"
@@ -158,6 +159,7 @@ int main()
 	//
 	auto evtt = bd.negaMaxTT();		//	トランスポジションテーブル 使用
 	cout << "evtt = " << evtt << "\n";
+	cout << "g_tt.size() = " << g_tt.size() << "\n";
 	//
     std::cout << "OK\n";
 }

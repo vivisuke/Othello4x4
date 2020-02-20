@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include <unordered_map>
 
 #if	0
 typedef unsigned short bitboard_t;
@@ -33,6 +34,8 @@ typedef char int8;
 #define		B4			0x0004
 #define		C4			0x0002
 #define		D4		0x0001
+
+extern std::unordered_map<uint32, int8> g_tt;
 
 //  立っているビット数を数える。分割統治法を用いる版（処理時間は O(logN)）
 int numOfBits(bitboard_t bits);
