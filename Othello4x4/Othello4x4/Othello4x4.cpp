@@ -156,5 +156,8 @@ int main()
 	auto ev = bd.negaMax();
 	cout << "ev = " << ev << "\n";
 	//
+	auto evtt = bd.negaMaxTT();		//	トランスポジションテーブル 使用
+	cout << "evtt = " << evtt << "\n";
+	//
     std::cout << "OK\n";
 }

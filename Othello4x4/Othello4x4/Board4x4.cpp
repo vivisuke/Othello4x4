@@ -1,8 +1,11 @@
 ﻿#include <algorithm>
+#include <unordered_map>
 #include <iostream>
 #include "Board4x4.h"
 
 using namespace std;
+
+unordered_map<uint32, int8> g_tt;		//	トランスポジションテーブル、黒番での評価値
 
 //----------------------------------------------------------------------
 std::string boardText(bitboard_t black, bitboard_t white)
@@ -69,6 +72,43 @@ int negaMax(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒番
 		return numOfBits(black) - numOfBits(white);
 	else
 		return -negaMax(white, black, nspc, true);;
+}
+int negaMaxTT(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒番深さ優先探索、トランスポジションテーブル使用版
+{
+	uint32 key = (black<<16) | white;
+	auto itr = g_tt.find(key);
+	if( itr != g_tt.end() )
+		return itr->second;
+	if( nspc == 0 ) {
+		//cout << boardText(black, white) << "\n";
+		auto v = numOfBits(black) - numOfBits(white);
+		g_tt[key] = v;
+		g_tt[(white<<16) | black] = -v;		//	白の手番であっても終局
+		return v;
+	}
+	bitboard_t space = ~(black | white);    //  空欄の部分だけビットを立てる
+	int maxev = -9999;
+	bool put = false;
+	while( space != 0 ) {
+		const bitboard_t p = space & -space;      //  一番右のビットのみ取り出す
+		bitboard_t rev = getRev(black, white, p);	//  反転パターン取得
+        if( rev != 0 ) {									//  石が返る場合
+        	int ev = -negaMax(white^rev, black|p|rev, nspc-1);
+        	maxev = max(maxev, ev);
+        	put = true;
+        }
+		space ^= p;                     //  一番右のビットをOFFにする
+	}
+	
+	if( put ) {		//	パスでない場合
+		//return maxev;
+	} else if( pass ) {	//	白黒双方がパスの場合
+		maxev = numOfBits(black) - numOfBits(white);
+	} else {
+		maxev = -negaMax(white, black, nspc, true);;
+	}
+	g_tt[key] = maxev;
+	return maxev;
 }
 //----------------------------------------------------------------------
 //	盤面初期化
@@ -149,4 +189,10 @@ int Board4x4::negaMax() const
 {
 	int nspc = numSpace(m_black, m_white);
 	return ::negaMax(m_black, m_white, nspc);
+}
+int Board4x4::negaMaxTT() const
+{
+	g_tt.clear();
+	int nspc = numSpace(m_black, m_white);
+	return ::negaMaxTT(m_black, m_white, nspc);
 }
