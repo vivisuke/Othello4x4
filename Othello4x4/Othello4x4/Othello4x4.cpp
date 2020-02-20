@@ -94,6 +94,7 @@ void test_getRev()
 	rev = bd.b_getRev(D1);	assert( rev == C2 );
 	rev = bd.w_getRev(D4);	assert( rev == C3 );
 }
+#if	0
 //	石反転処理
 void doPut(	bitboard_t &black,		//  黒石
 					bitboard_t &white,		//  白石
@@ -102,6 +103,42 @@ void doPut(	bitboard_t &black,		//  黒石
 {
     black ^= p | rev;
     white ^= rev;
+}
+#endif
+void test_negaMax()
+{
+	//		　ＡＢＣＤ
+	//		１○●・・
+	//		２●○○●
+	//		３●●●○
+	//		４●●●●
+	Board4x4 bd(0x49ef, 0x8610);
+	cout << bd.text() << "\n";
+	auto ev = bd.negaMax();
+	cout << "ev = " << ev << "\n";
+	//	D1, C1: -> 11 - 5 = 6
+	//		　ＡＢＣＤ
+	//		１○○○●
+	//		２●○●●
+	//		３●●●○
+	//		４●●●●
+	//	C1, D1: -> 9 - 7 = 2
+	//		　ＡＢＣＤ
+	//		１○○○○
+	//		２●○●○
+	//		３●●●○
+	//		４●●●●
+	assert( ev == 6 );
+	//	パスがある場合
+	//		　ＡＢＣＤ
+	//		１●●・・
+	//		２●○○●
+	//		３●●●○
+	//		４●●●●
+	bd = Board4x4(0xc9ef, 0x0610);
+	cout << bd.text() << "\n";
+	ev = bd.negaMax();
+	cout << "ev = " << ev << "\n";
 }
 //	初期化
 int main()
@@ -113,8 +150,9 @@ int main()
 	cout << bd.text() << "\n";
 	assert( numSpace(bd.m_black, bd.m_white) == 12 );
 	//
-	auto ev = bd.negaMax();
-	cout << "ev = " << ev << "\n";
+	test_negaMax();
+	//auto ev = bd.negaMax();
+	//cout << "ev = " << ev << "\n";
 	//
     std::cout << "OK\n";
 }
