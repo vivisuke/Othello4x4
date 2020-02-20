@@ -37,12 +37,12 @@ int numSpace(bitboard_t black, bitboard_t white)		//	空欄数を返す
 {
 	return numOfBits(~(black|white));
 }
-void	b_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)		//	黒を p に打つ
+void	b_put(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)		//	黒を p に打つ
 {
 	black ^= p | rev;
 	white ^= rev;
 }
-void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)		//	白を p に打つ
+void	w_put(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)		//	白を p に打つ
 {
 	white ^= p | rev;
 	black ^= rev;
@@ -190,9 +190,15 @@ int Board4x4::negaMax() const
 	int nspc = numSpace(m_black, m_white);
 	return ::negaMax(m_black, m_white, nspc);
 }
-int Board4x4::negaMaxTT() const
+int Board4x4::b_negaMaxTT() const
 {
 	g_tt.clear();
 	int nspc = numSpace(m_black, m_white);
 	return ::negaMaxTT(m_black, m_white, nspc);
+}
+int Board4x4::w_negaMaxTT() const
+{
+	g_tt.clear();
+	int nspc = numSpace(m_black, m_white);
+	return ::negaMaxTT(m_white, m_black, nspc);		//	プラスなら白有利なので、符号反転の必要は無い
 }

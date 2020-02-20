@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <algorithm>
 #include <string>
 #include <unordered_map>
 
@@ -42,8 +43,8 @@ extern std::unordered_map<uint32, int8> g_tt;
 int numOfBits(bitboard_t bits);
 int numSpace(bitboard_t black, bitboard_t white);		//	空欄数を返す
 bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p);		//	黒を p に打った場合に、反転する白のパターンを取得
-void	b_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	黒を p に打つ
-void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	白を p に打つ
+void	b_put(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	黒を p に打つ
+void	w_put(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	白を p に打つ
 int negaMax(bitboard_t black, bitboard_t white, int nspc, bool=false);			//	黒番深さ優先探索
 int negaMaxTT(bitboard_t black, bitboard_t white, int nspc, bool=false);			//	黒番深さ優先探索、トランスポジションテーブル使用版
 std::string boardText(bitboard_t black, bitboard_t white);
@@ -64,12 +65,16 @@ public:
 	bitboard_t	b_getRev(bitboard_t p) const;	//	黒を p に打った場合に、反転する白のパターンを取得
 	bitboard_t	w_getRev(bitboard_t p) const;	//	白を p に打った場合に、反転する黒のパターンを取得
 	int	negaMax() const;
-	int	negaMaxTT() const;
+	int	b_negaMaxTT() const;			//	黒番評価、プラスの値：黒有利
+	int	w_negaMaxTT() const;			//	白番評価、プラスの値：白有利
 public:
 	void	init();
+	void	swapBW() { std::swap(m_black, m_white); }
 	void	clear(bitboard_t p) { m_black &= ~p; m_white &= ~p; }
 	void	b_set(bitboard_t p) { m_black |= p; m_white &= ~p; }
 	void	w_set(bitboard_t p) { m_white |= p; m_black &= ~p; }
+	void	b_put(bitboard_t p, bitboard_t rev) { ::b_put(m_black, m_white, p, rev); }
+	void	w_put(bitboard_t p, bitboard_t rev) { ::w_put(m_black, m_white, p, rev); }
 public:
 	bitboard_t	m_black;		//	黒石
 	bitboard_t	m_white;		//	白石

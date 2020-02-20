@@ -145,7 +145,7 @@ void test_negaMax()
 }
 void test_negaMaxTT()
 {
-	cout << "test_negaMaxTT()\n";
+	cout << "test_negaMaxTT():\n\n";
 	//		　ＡＢＣＤ
 	//		１○●・・
 	//		２●○○●
@@ -153,7 +153,7 @@ void test_negaMaxTT()
 	//		４●●●●
 	Board4x4 bd(0x49ef, 0x8610);
 	cout << bd.text() << "\n";
-	auto ev = bd.negaMaxTT();
+	auto ev = bd.b_negaMaxTT();
 	cout << "ev = " << ev << "\n";
 	cout << "g_tt.size() = " << g_tt.size() << "\n";
 	//	トランスポジションテーブルの内容をすべて表示
@@ -164,9 +164,136 @@ void test_negaMaxTT()
 	}
 	cout << "\n";
 }
-//	初期化
+void test_negaMaxTT2()
+{
+	cout << "test_negaMaxTT2():\n\n";
+	//		　ａｂｃｄ
+	//		１・・・・
+	//		２・●○・
+	//		３・○○○
+	//		４・・・・
+	Board4x4 bd(B2, C2|B3|C3|D3);
+	cout << bd.text() << "\n";
+	auto evtt = bd.b_negaMaxTT();		//	トランスポジションテーブル使用、注意：negaMaxTT() は常に黒番
+	cout << "evtt = " << evtt << "\n";
+	cout << "g_tt.size() = " << g_tt.size() << "\n";
+	cout << "\n";
+	int i = 0;
+	for (bitboard_t p = A1; p != 0; p>>=1) {
+		bitboard_t rev = bd.b_getRev(p);
+		if( !rev ) {
+			if( (bd.m_black & p) != 0 ) cout << " ●";
+			else if( (bd.m_white & p) != 0 ) cout << " ○";
+			else cout << " ・";
+		} else {
+			bd.b_put(p, rev);
+			uint32 key = (bd.m_white << 16) | bd.m_black;		//	次は白番なので、白黒反転したものをキーに
+			int ev = -g_tt[key];			//	次は白番なので評価値はプラマイ逆
+			if( !ev ) cout << "  0";
+			else if( ev > 0 ) {
+				if( ev < 10 ) cout << " ";
+				cout << "+" << ev;
+			} else {
+				if( ev > -10 ) cout << " ";
+				cout << ev;
+			}
+			bd.b_put(p, rev);	//	盤面を元に戻す
+		}
+		if( ++i % 4 == 0 ) cout << "\n";
+	}
+	cout << "\n";
+}
+void printEvals(Board4x4& bd, bool blackTurn)
+{
+	if( blackTurn ) {		//	黒番
+		auto evtt = bd.b_negaMaxTT();		//	トランスポジションテーブル使用
+		cout << "evtt = " << evtt << "\n";
+		cout << "g_tt.size() = " << g_tt.size() << "\n";
+		cout << "\n";
+		cout << "black turn:\n";
+		int i = 0;
+		for (bitboard_t p = A1; p != 0; p>>=1) {
+			bitboard_t rev = bd.b_getRev(p);
+			if( !rev ) {
+				if( (bd.m_black & p) != 0 ) cout << " ●";
+				else if( (bd.m_white & p) != 0 ) cout << " ○";
+				else cout << " ・";
+			} else {
+				bd.b_put(p, rev);
+				uint32 key = (bd.m_white << 16) | bd.m_black;
+				int ev = g_tt[key];
+				if( !ev ) cout << "  0";
+				else if( ev > 0 ) {
+					if( ev < 10 ) cout << " ";
+					cout << "+" << ev;
+				} else {
+					if( ev > -10 ) cout << " ";
+					cout << ev;
+				}
+				bd.b_put(p, rev);	//	盤面を元に戻す
+			}
+			if( ++i % 4 == 0 ) cout << "\n";
+		}
+	} else {		//	白番
+		auto evtt = bd.w_negaMaxTT();		//	トランスポジションテーブル使用
+		cout << "evtt = " << evtt << "\n";
+		cout << "g_tt.size() = " << g_tt.size() << "\n";
+		cout << "\n";
+		cout << "white turn:\n";
+		int i = 0;
+		for (bitboard_t p = A1; p != 0; p>>=1) {
+			bitboard_t rev = bd.w_getRev(p);
+			if( !rev ) {
+				if( (bd.m_black & p) != 0 ) cout << " ●";
+				else if( (bd.m_white & p) != 0 ) cout << " ○";
+				else cout << " ・";
+			} else {
+				bd.w_put(p, rev);
+				uint32 key = (bd.m_black << 16) | bd.m_white;
+				int ev = -g_tt[key];
+				if( !ev ) cout << "  0";
+				else if( ev > 0 ) {
+					if( ev < 10 ) cout << " ";
+					cout << "+" << ev;
+				} else {
+					if( ev > -10 ) cout << " ";
+					cout << ev;
+				}
+				bd.w_put(p, rev);	//	盤面を元に戻す
+			}
+			if( ++i % 4 == 0 ) cout << "\n";
+		}
+	}
+	cout << "\n";
+}
+void test_negaMaxTT3()
+{
+	cout << "test_negaMaxTT3():\n\n";
+#if	0
+	//		　ａｂｃｄ
+	//		１・・・・
+	//		２・○●・
+	//		３・●●●
+	//		４・・・・
+	Board4x4 bd(C2|B3|C3|D3, B2);
+	bool blackTurn = false;			//	黒番 or 白番, true for 黒番
+#endif
+
+	//		　ａｂｃｄ
+	//		１○●○・
+	//		２○○●・
+	//		３○●●●
+	//		４○○○○
+	Board4x4 bd(0x4270, 0xac8f);
+	//bool blackTurn = false;			//	黒番 or 白番, true for 黒番
+	//cout << (blackTurn?"black":"white") << " turn:\n";
+	//cout << bd.text() << "\n";
+	printEvals(bd, false);
+	
+}
 int main()
 {
+#if	0
 	test_numOfBits();
 	test_getRev();
 	//
@@ -177,11 +304,17 @@ int main()
 	test_negaMax();
 	auto ev = bd.negaMax();
 	cout << "ev = " << ev << "\n";
+#endif
 	//
-	test_negaMaxTT();
-	auto evtt = bd.negaMaxTT();		//	トランスポジションテーブル 使用
+	//test_negaMaxTT();
+	//test_negaMaxTT2();
+	test_negaMaxTT3();
+	//
+#if	0
+	auto evtt = bd.b_negaMaxTT();		//	トランスポジションテーブル 使用
 	cout << "evtt = " << evtt << "\n";
 	cout << "g_tt.size() = " << g_tt.size() << "\n";
+#endif
 	//
     std::cout << "OK\n";
 }
