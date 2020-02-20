@@ -13,5 +13,10 @@ Othello4x4.spr.txt
 ◎ C 02/20 02/20 0.001 ToDo getRev() を関数化
 ● C 02/20             ToDo negaMax(int spc, black, white) 関数
 ◎ C 02/20 02/20 0.001 ToDo int numSpace(bitboard_t black, bitboard_t white);		//	空欄数を返す
+◎ C 02/20 02/20 0.001 ToDo b_doPut(b, w, p, rev), w_doPut(b, w, p, rev) 
+● C 02/20             ToDo 
+● C 02/20             ToDo 
+● C 02/20             ToDo 
+● C 02/20             ToDo 
 ● C 02/20             ToDo 
 

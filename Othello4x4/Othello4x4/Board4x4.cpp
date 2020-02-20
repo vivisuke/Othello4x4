@@ -1,4 +1,5 @@
-﻿#include "Board4x4.h"
+﻿#include <algorithm>
+#include "Board4x4.h"
 
 using namespace std;
 
@@ -16,6 +17,34 @@ int numOfBits(bitboard_t bits)
 int numSpace(bitboard_t black, bitboard_t white)		//	空欄数を返す
 {
 	return numOfBits(~(black|white));
+}
+void	b_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)		//	黒を p に打つ
+{
+	black ^= p | rev;
+	white ^= rev;
+}
+void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)		//	白を p に打つ
+{
+	white ^= p | rev;
+	black ^= rev;
+}
+int negaMax(bitboard_t black, bitboard_t white, int nspc)			//	黒番深さ優先探索
+{
+	if( nspc == 0 ) {
+		return numOfBits(black) - numOfBits(white);
+	}
+	bitboard_t space = ~(black | white);    //  空欄の部分だけビットを立てる
+	int maxev = -9999;
+	while( space != 0 ) {
+		const bitboard_t p = space & -space;      //  一番右のビットのみ取り出す
+		bitboard_t rev = getRev(black, white, p);	//  反転パターン取得
+        if( rev != 0 ) {									//  石が返る場合
+        	int ev = -negaMax(white^rev, black|p|rev, nspc-1);
+        	maxev = max(maxev, ev);
+        }
+		space ^= p;                     //  一番右のビットをOFFにする
+	}
+	return 0;
 }
 //----------------------------------------------------------------------
 //	盤面初期化
@@ -88,17 +117,4 @@ bitboard_t Board4x4::w_getRev(bitboard_t p) const	//	白を p に打った場合
 	return getRev(m_white, m_black, p);
 	//Board4x4 b2(m_white, m_black);
 	//return b2.b_getRev(p);
-}
-int negaMax(int nspc, bitboard_t black, bitboard_t white)			//	黒番深さ優先探索
-{
-	if( nspc == 0 ) return numOfBits(black) - numOfBits(white);
-	bitboard_t space = ~(black | white);    //  空欄の部分だけビットを立てる
-	while( space != 0 ) {
-		const bitboard_t p = space & -space;      //  一番右のビットのみ取り出す
-		bitboard_t rev = getRev(black, white, p);	//  反転パターン取得
-        if( rev != 0 ) {									//  石が返る場合
-        }
-		space ^= p;                     //  一番右のビットをOFFにする
-	}
-	return 0;
 }
