@@ -63,6 +63,7 @@ void test_getRev()
 //		２・○●・
 //		３・●○・
 //		４・・・・
+	cout << bd.text() << "\n";
 	auto rev = bd.b_getRev(A1);	assert( rev == 0 );
 	rev = bd.b_getRev(A2);	assert( rev == B2 );
 	rev = bd.b_getRev(A3);	assert( rev == 0 );

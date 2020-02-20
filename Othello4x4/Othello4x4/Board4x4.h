@@ -60,6 +60,7 @@ public:
 	int	negaMax() const;
 public:
 	void	init();
+	void	clear(bitboard_t p) { m_black &= ~p; m_white &= ~p; }
 	void	b_set(bitboard_t p) { m_black |= p; m_white &= ~p; }
 	void	w_set(bitboard_t p) { m_white |= p; m_black &= ~p; }
 public:
