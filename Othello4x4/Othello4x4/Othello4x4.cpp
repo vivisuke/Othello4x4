@@ -113,5 +113,8 @@ int main()
 	cout << bd.text() << "\n";
 	assert( numSpace(bd.m_black, bd.m_white) == 12 );
 	//
+	auto ev = bd.negaMax();
+	cout << "ev = " << ev << "\n";
+	//
     std::cout << "OK\n";
 }

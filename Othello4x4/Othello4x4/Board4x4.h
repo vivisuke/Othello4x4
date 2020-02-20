@@ -40,6 +40,7 @@ bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p);		//	黒を 
 void	b_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	黒を p に打つ
 void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev);		//	白を p に打つ
 int negaMax(bitboard_t black, bitboard_t white, int nspc);			//	黒番深さ優先探索
+std::string boardText(bitboard_t black, bitboard_t white);
 
 //	4x4 盤面クラス
 class Board4x4 {
@@ -56,6 +57,7 @@ public:
 	//bitboard_t	b_genPutPos() const;		//	黒が着手可能な箇所を取得
 	bitboard_t	b_getRev(bitboard_t p) const;	//	黒を p に打った場合に、反転する白のパターンを取得
 	bitboard_t	w_getRev(bitboard_t p) const;	//	白を p に打った場合に、反転する黒のパターンを取得
+	int	negaMax() const;
 public:
 	void	init();
 	void	b_set(bitboard_t p) { m_black |= p; m_white &= ~p; }

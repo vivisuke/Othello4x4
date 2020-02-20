@@ -1,9 +1,25 @@
 ﻿#include <algorithm>
+#include <iostream>
 #include "Board4x4.h"
 
 using namespace std;
 
 //----------------------------------------------------------------------
+std::string boardText(bitboard_t black, bitboard_t white)
+{
+	string txt;
+	for (int mask = MSB, i = 0; mask != 0; mask>>=1) {
+		if( (black & mask) != 0 )
+			txt += "●";
+		else if( (white & mask) != 0 )
+			txt += "○";
+		else
+			txt += "・";
+		if( ++i % 4 == 0 )
+			txt += "\n";
+	}
+	return txt;
+}
 //  立っているビット数を数える。分割統治法を用いる版（処理時間は O(logN)）少し最適化
 int numOfBits(bitboard_t bits)
 {
@@ -31,6 +47,7 @@ void	w_doPut(bitboard_t& black, bitboard_t& white, bitboard_t p, bitboard_t rev)
 int negaMax(bitboard_t black, bitboard_t white, int nspc)			//	黒番深さ優先探索
 {
 	if( nspc == 0 ) {
+		//cout << boardText(black, white) << "\n";
 		return numOfBits(black) - numOfBits(white);
 	}
 	bitboard_t space = ~(black | white);    //  空欄の部分だけビットを立てる
@@ -60,6 +77,8 @@ void Board4x4::init()
 }
 std::string Board4x4::text() const
 {
+	return ::boardText(m_black, m_white);
+#if	0
 	string txt;
 	for (int mask = MSB, i = 0; mask != 0; mask>>=1) {
 		if( (m_black & mask) != 0 )
@@ -72,6 +91,7 @@ std::string Board4x4::text() const
 			txt += "\n";
 	}
 	return txt;
+#endif
 }
 bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p)		//	黒を p に打った場合に、反転する白のパターンを取得
 {
@@ -117,4 +137,9 @@ bitboard_t Board4x4::w_getRev(bitboard_t p) const	//	白を p に打った場合
 	return getRev(m_white, m_black, p);
 	//Board4x4 b2(m_white, m_black);
 	//return b2.b_getRev(p);
+}
+int Board4x4::negaMax() const
+{
+	int nspc = numSpace(m_black, m_white);
+	return ::negaMax(m_black, m_white, nspc);
 }
