@@ -288,14 +288,69 @@ void printEvals(Board4x4 bd, bool blackTurn)
 void test_negaMaxTT3()
 {
 	cout << "test_negaMaxTT3():\n\n";
-#if	0
+#if	1
 	//		　ａｂｃｄ
 	//		１・・・・
 	//		２・○●・
 	//		３・●●●
 	//		４・・・・
-	Board4x4 bd(C2|B3|C3|D3, B2);
-	bool blackTurn = false;			//	黒番 or 白番, true for 黒番
+	//Board4x4 bd(C2|B3|C3|D3, B2);
+	//bool blackTurn = false;			//	黒番 or 白番, true for 黒番
+	printEvals(Board4x4(C2|B3|C3|D3, B2), false);
+	//		　ａｂｃｄ
+	//		１・・・・
+	//		２・○●・
+	//		３・●○●
+	//		４・・・○
+	printEvals(Board4x4(C2|B3|D3, B2|C3|D4), true);
+	//		　ａｂｃｄ
+	//		１・・・・
+	//		２・○●・
+	//		３・●●●
+	//		４・・●○
+	printEvals(Board4x4(C2|B3|C3|D3|C4, B2|D4), false);
+	//		　ａｂｃｄ
+	//		１・・・・
+	//		２・○○○
+	//		３・●●○
+	//		４・・●○
+	printEvals(Board4x4(B3|C3|C4, B2|D4|C2|D3|D2), true);
+	//		　ａｂｃｄ
+	//		１●・・・
+	//		２・●○○
+	//		３・●●○
+	//		４・・●○
+	printEvals(Board4x4(B2|B3|C3|C4|A1, D4|C2|D3|D2), false);
+	//		　ａｂｃｄ
+	//		１●・・・
+	//		２・●○○
+	//		３・●○○
+	//		４・○○○
+	printEvals(Board4x4(A1|B2|B3, B4|C2|C3|C4|D2|D3|D4), true);
+	//		　ａｂｃｄ
+	//		１●・・●
+	//		２・●●○
+	//		３・●○○
+	//		４・○○○
+	printEvals(Board4x4(A1|B2|B3|C2|D1, B4|C3|C4|D2|D3|D4), false);
+	//		　ａｂｃｄ
+	//		１●・・●
+	//		２・●●○
+	//		３○○○○
+	//		４・○○○
+	printEvals(Board4x4(A1|B2|C2|D1, A3|B3|B4|C3|C4|D2|D3|D4), true);
+	//		　ａｂｃｄ
+	//		１●・・●
+	//		２・●●○
+	//		３○●○○
+	//		４●○○○
+	printEvals(Board4x4(A1|A4|B2|B3|C2|D1, A3|B4|C3|C4|D2|D3|D4), false);
+	//		　ａｂｃｄ
+	//		１●・・●
+	//		２○○○○
+	//		３○○○○
+	//		４●○○○
+	printEvals(Board4x4(A1|A4|D1, A2|A3|B2|B3|B4|C2|C3|C4|D2|D3|D4), true);
 #endif
 #if	0
 	//		白番
@@ -310,6 +365,7 @@ void test_negaMaxTT3()
 	//cout << bd.text() << "\n";
 	printEvals(bd, false);
 #endif
+#if	0
 	//		白番
 	//		　ａｂｃｄ
 	//		１○●○○
@@ -326,6 +382,7 @@ void test_negaMaxTT3()
 	//		４○○○○
 	printEvals(Board4x4(0x4030, 0xbecf), true);
 	printTT();
+#endif
 #if	0
 	//		白番
 	//		　ａｂｃｄ
@@ -338,8 +395,10 @@ void test_negaMaxTT3()
 }
 int main()
 {
+#if	0
 	test_numOfBits();
 	test_getRev();
+#endif
 #if	0
 	//
 	Board4x4 bd;
