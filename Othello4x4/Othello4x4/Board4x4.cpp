@@ -68,9 +68,16 @@ int negaMax(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒番
 	}
 	if( put )		//	パスでない場合
 		return maxev;
-	if( pass )	//	白黒双方がパスの場合
-		return numOfBits(black) - numOfBits(white);
-	else
+	if( pass ) {	//	白黒双方がパスの場合
+		//maxev = numOfBits(black) - numOfBits(white);		//	2014年以前の日本ルール
+		//	2014年以降の新ルール
+		const auto nb = numOfBits(black);
+		const auto nw = numOfBits(white);
+		maxev = nb - nw;
+		if( nb > nw ) maxev += nspc;
+		else maxev -= nspc;
+		return maxev;
+	} else
 		return -negaMax(white, black, nspc, true);;
 }
 int negaMaxTT(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒番深さ優先探索、トランスポジションテーブル使用版
