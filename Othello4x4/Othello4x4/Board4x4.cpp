@@ -103,9 +103,15 @@ int negaMaxTT(bitboard_t black, bitboard_t white, int nspc, bool pass)			//	黒�
 	if( put ) {		//	パスでない場合
 		//return maxev;
 	} else if( pass ) {	//	白黒双方がパスの場合
-		maxev = numOfBits(black) - numOfBits(white);
+		//maxev = numOfBits(black) - numOfBits(white);		//	2014年以前の日本ルール
+		//	2014年以降の新ルール
+		const auto nb = numOfBits(black);
+		const auto nw = numOfBits(white);
+		maxev = nb - nw;
+		if( nb > nw ) maxev += nspc;
+		else maxev -= nspc;
 	} else {
-		maxev = -negaMax(white, black, nspc, true);;
+		maxev = -negaMaxTT(white, black, nspc, true);;
 	}
 	g_tt[key] = maxev;
 	return maxev;
