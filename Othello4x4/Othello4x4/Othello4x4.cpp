@@ -317,6 +317,7 @@ void test_negaMaxTT3()
 	//		３○○●●
 	//		４○○○○
 	printEvals(Board4x4(0x4030, 0xbecf), false);
+	printTT();
 	//		黒番
 	//		　ａｂｃｄ
 	//		１○●○○
