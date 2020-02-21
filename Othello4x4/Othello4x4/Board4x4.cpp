@@ -144,6 +144,44 @@ bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p)		//	黒を p
 {
 	if( ((black | white) & p) != 0 ) return 0;      //  p が空白ではない場合
 	bitboard_t rev = 0;                         //  反転パターン
+#if	1
+	const bitboard_t wh = white & 0x6666;           //  水平方向用マスク
+	//  右方向に返る石をチェック
+	rev |= (p >> 1) & wh & (black << 1);    //  ・○● の場合
+	rev |= (p >> 1) & wh & (wh << 1) & (black << 2);    //  ・○○● の場合の空欄隣の○
+	rev |= (p >> 2) & (wh >> 1) & wh & (black << 1);    //  ・○○● の場合の次の○
+	//  左方向に返る石をチェック
+	rev |= (p << 1) & wh & (black >> 1);    //  ●○・ の場合
+	rev |= (p << 1) & wh & (wh >> 1) & (black >> 2);    //  ●○○・ の場合の空欄隣の○
+	rev |= (p << 2) & (wh << 1) & wh & (black >> 1);    //  ●○○・ の場合の次の○
+	//
+	const bitboard_t wv = white & 0x0ff0;           //  垂直方向用マスク
+	//	下方向に返る石をチェック
+	rev |= (p >> 4) & wh & (black << 4);    //  ・○● の場合
+	rev |= (p >> 4) & wh & (wh << 4) & (black << 8);    //  ・○○● の場合の空欄隣の○
+	rev |= (p >> 8) & (wh >> 4) & wh & (black << 4);    //  ・○○● の場合の次の○
+	//  上方向に返る石をチェック
+	rev |= (p << 4) & wh & (black >> 4);    //  ●○・ の場合
+	rev |= (p << 4) & wh & (wh >> 4) & (black >> 8);    //  ●○○・ の場合の空欄隣の○
+	rev |= (p << 8) & (wh << 4) & wh & (black >> 4);    //  ●○○・ の場合の次の○
+	const bitboard_t wd = white & 0x0660;           //  対角線方向用マスク
+	//	左下方向に返る石をチェック
+	rev |= (p >> 3) & wh & (black << 3);    //  ・○● の場合
+	rev |= (p >> 3) & wh & (wh << 3) & (black << 6);    //  ・○○● の場合の空欄隣の○
+	rev |= (p >> 6) & (wh >> 3) & wh & (black << 3);    //  ・○○● の場合の次の○
+	//	右下方向に返る石をチェック
+	rev |= (p >> 5) & wh & (black << 5);    //  ・○● の場合
+	rev |= (p >> 5) & wh & (wh << 5) & (black << 10);    //  ・○○● の場合の空欄隣の○
+	rev |= (p >> 10) & (wh >> 5) & wh & (black << 5);    //  ・○○● の場合の次の○
+	//	左上方向に返る石をチェック
+	rev |= (p << 5) & wh & (black >> 5);    //  ●○・ の場合
+	rev |= (p << 5) & wh & (wh >> 5) & (black >> 10);    //  ●○○・ の場合の空欄隣の○
+	rev |= (p << 10) & (wh << 5) & wh & (black >> 5);    //  ●○○・ の場合の次の○
+	//	右上方向に返る石をチェック
+	rev |= (p << 3) & wh & (black >> 3);    //  ●○・ の場合
+	rev |= (p << 3) & wh & (wh >> 3) & (black >> 6);    //  ●○○・ の場合の空欄隣の○
+	rev |= (p << 6) & (wh << 3) & wh & (black >> 3);    //  ●○○・ の場合の次の○
+#else
 	const bitboard_t wh = white & 0x6666;           //  水平方向用マスク
 	//  右方向に返る石をチェック
 	rev |= (p >> 1) & wh & ((black << 1) | ((wh  & (black << 1)) << 1));    //  隣の石
@@ -172,6 +210,7 @@ bitboard_t getRev(bitboard_t black, bitboard_t white, bitboard_t p)		//	黒を p
 	//	右上方向に返る石をチェック
 	rev |= (p << 3) & wv & ((black >> 3) | ((wv  & (black >> 3)) >> 3));    //  隣の石
 	rev |= (p << 6) & (wv << 3) & wv & (black >> 3);    //  もう一個先の石
+#endif
 	//
 	return rev;
 }

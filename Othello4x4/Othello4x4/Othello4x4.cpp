@@ -95,6 +95,17 @@ void test_getRev()
 	rev = bd.w_getRev(A4);	assert( rev == B3 );
 	rev = bd.b_getRev(D1);	assert( rev == C2 );
 	rev = bd.w_getRev(D4);	assert( rev == C3 );
+	//		黒番
+	//		　ａｂｃｄ
+	//		１○●○○
+	//		２○○○・
+	//		３○○●●
+	//		４○○○○
+	bd.b_set(0x4030);
+	bd.w_set(0xbecf);
+	rev = bd.b_getRev(D2);
+	assert( rev == 0 );
+	
 }
 #if	0
 //	石反転処理
@@ -143,6 +154,15 @@ void test_negaMax()
 	cout << "ev = " << ev << "\n";
 	assert( ev == 14 );		//	D1, C1 連打、15 - 1 = 14
 }
+void printTT()		//	トランスポジションテーブルの内容をすべて表示
+{
+	for (auto itr = g_tt.begin(); itr != g_tt.end(); ++itr) {
+		bitboard_t black = itr->first >> 16;
+		bitboard_t white = itr->first & BB_MASK;
+		cout << boardText(black, white) << "ev = " << (int)itr->second << "\n\n";
+	}
+	cout << "\n";
+}
 void test_negaMaxTT()
 {
 	cout << "test_negaMaxTT():\n\n";
@@ -156,13 +176,9 @@ void test_negaMaxTT()
 	auto ev = bd.b_negaMaxTT();
 	cout << "ev = " << ev << "\n";
 	cout << "g_tt.size() = " << g_tt.size() << "\n";
-	//	トランスポジションテーブルの内容をすべて表示
-	for (auto itr = g_tt.begin(); itr != g_tt.end(); ++itr) {
-		bitboard_t black = itr->first >> 16;
-		bitboard_t white = itr->first & BB_MASK;
-		cout << boardText(black, white) << "ev = " << (int)itr->second << "\n\n";
-	}
-	cout << "\n";
+	
+	printTT();
+
 }
 void test_negaMaxTT2()
 {
@@ -203,8 +219,11 @@ void test_negaMaxTT2()
 	}
 	cout << "\n";
 }
-void printEvals(Board4x4& bd, bool blackTurn)
+void printEvals(Board4x4 bd, bool blackTurn)
 {
+	for(bitboard_t p = A1; p != 0; p>>=1) {
+		assert( (bd.m_black&p) ==0 || (bd.m_white&p) ==0 );
+	}
 	if( blackTurn ) {		//	黒番
 		auto evtt = bd.b_negaMaxTT();		//	トランスポジションテーブル使用
 		cout << "evtt = " << evtt << "\n";
@@ -221,7 +240,7 @@ void printEvals(Board4x4& bd, bool blackTurn)
 			} else {
 				bd.b_put(p, rev);
 				uint32 key = (bd.m_white << 16) | bd.m_black;
-				int ev = g_tt[key];
+				int ev = -g_tt[key];
 				if( !ev ) cout << "  0";
 				else if( ev > 0 ) {
 					if( ev < 10 ) cout << " ";
@@ -278,7 +297,8 @@ void test_negaMaxTT3()
 	Board4x4 bd(C2|B3|C3|D3, B2);
 	bool blackTurn = false;			//	黒番 or 白番, true for 黒番
 #endif
-
+#if	0
+	//		白番
 	//		　ａｂｃｄ
 	//		１○●○・
 	//		２○○●・
@@ -289,13 +309,37 @@ void test_negaMaxTT3()
 	//cout << (blackTurn?"black":"white") << " turn:\n";
 	//cout << bd.text() << "\n";
 	printEvals(bd, false);
-	
+#endif
+	//		白番
+	//		　ａｂｃｄ
+	//		１○●○○
+	//		２○○○・
+	//		３○○●●
+	//		４○○○○
+	printEvals(Board4x4(0x4030, 0xbecf), false);
+	//		黒番
+	//		　ａｂｃｄ
+	//		１○●○○
+	//		２○○○・
+	//		３○○●●
+	//		４○○○○
+	printEvals(Board4x4(0x4030, 0xbecf), true);
+	printTT();
+#if	0
+	//		白番
+	//		　ａｂｃｄ
+	//		１○●○○
+	//		２○○○・
+	//		３○○●●
+	//		４○○○○
+	printEvals(Board4x4(0x4030, 0xbecf), false);
+#endif
 }
 int main()
 {
-#if	0
 	test_numOfBits();
 	test_getRev();
+#if	0
 	//
 	Board4x4 bd;
 	cout << bd.text() << "\n";
